@@ -1,0 +1,131 @@
+{
+  "resource": "/typeHierarchy",
+  "path": "/typeHierarchy",
+  "httpMethod": "GET",
+  "headers": {
+      "Accept": "application/json",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7",
+      "cache-control": "no-cache",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "NL",
+      "content-type": "application/json",
+      "Host": "2efmq6rvv0.execute-api.eu-west-1.amazonaws.com",
+      "postman-token": "188b4b4d-1382-54c0-3a91-15f7be905a7b",
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
+      "Via": "2.0 9de9a776d0da209cb66ec4bd03877799.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "jd6WgUrhg0R0WLA4DmqnoEsUzuOmehTqjW_OwWDTUqLwx4HhDlg0Yw==",
+      "X-Amzn-Trace-Id": "Root=1-5cd42378-1cd3624cacda8f70ba797108",
+      "X-Forwarded-For": "194.171.252.101, 216.137.60.77",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+      "Accept": [
+          "application/json"
+      ],
+      "Accept-Encoding": [
+          "gzip, deflate, br"
+      ],
+      "Accept-Language": [
+          "en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7"
+      ],
+      "cache-control": [
+          "no-cache"
+      ],
+      "CloudFront-Forwarded-Proto": [
+          "https"
+      ],
+      "CloudFront-Is-Desktop-Viewer": [
+          "true"
+      ],
+      "CloudFront-Is-Mobile-Viewer": [
+          "false"
+      ],
+      "CloudFront-Is-SmartTV-Viewer": [
+          "false"
+      ],
+      "CloudFront-Is-Tablet-Viewer": [
+          "false"
+      ],
+      "CloudFront-Viewer-Country": [
+          "NL"
+      ],
+      "content-type": [
+          "application/json"
+      ],
+      "Host": [
+          "2efmq6rvv0.execute-api.eu-west-1.amazonaws.com"
+      ],
+      "postman-token": [
+          "188b4b4d-1382-54c0-3a91-15f7be905a7b"
+      ],
+      "User-Agent": [
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36"
+      ],
+      "Via": [
+          "2.0 9de9a776d0da209cb66ec4bd03877799.cloudfront.net (CloudFront)"
+      ],
+      "X-Amz-Cf-Id": [
+          "jd6WgUrhg0R0WLA4DmqnoEsUzuOmehTqjW_OwWDTUqLwx4HhDlg0Yw=="
+      ],
+      "X-Amzn-Trace-Id": [
+          "Root=1-5cd42378-1cd3624cacda8f70ba797108"
+      ],
+      "X-Forwarded-For": [
+          "194.171.252.101, 216.137.60.77"
+      ],
+      "X-Forwarded-Port": [
+          "443"
+      ],
+      "X-Forwarded-Proto": [
+          "https"
+      ]
+  },
+  "queryStringParameters": {
+      "deviceType": "dt001"
+  },
+  "multiValueQueryStringParameters": {
+      "deviceType": [
+          "dt001"
+      ]
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+      "resourceId": "1s67yr",
+      "resourcePath": "/typeHierarchy",
+      "httpMethod": "GET",
+      "extendedRequestId": "Zap62GcDjoEFh9A=",
+      "requestTime": "09/May/2019:12:56:24 +0000",
+      "path": "/poc/typeHierarchy",
+      "accountId": "495560782188",
+      "protocol": "HTTP/1.1",
+      "stage": "poc",
+      "domainPrefix": "2efmq6rvv0",
+      "requestTimeEpoch": 1557406584652,
+      "requestId": "d9fec949-7259-11e9-ad95-57ae43d68855",
+      "identity": {
+          "cognitoIdentityPoolId": null,
+          "accountId": null,
+          "cognitoIdentityId": null,
+          "caller": null,
+          "sourceIp": "194.171.252.101",
+          "principalOrgId": null,
+          "accessKey": null,
+          "cognitoAuthenticationType": null,
+          "cognitoAuthenticationProvider": null,
+          "userArn": null,
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
+          "user": null
+      },
+      "domainName": "2efmq6rvv0.execute-api.eu-west-1.amazonaws.com",
+      "apiId": "2efmq6rvv0"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}

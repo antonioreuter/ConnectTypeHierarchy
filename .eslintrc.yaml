@@ -1,0 +1,32 @@
+#
+# © 2016, Amazon.com, Inc. or its affiliates.
+#
+# This source code is subject to the terms found in the AWS Enterprise Customer Agreement
+# effective September 26, 2008, the Amendment effective May 8, 2014, and the
+# AWS Professional Services Statement of Work between Amazon Web Services, Inc. and
+# Philips Healthcare Informatics, Inc. with SOW ID#: E020824628.
+#
+
+---
+extends: airbnb                            # We start with airbnb linting rules
+parserOptions:
+  ecmaVersion: '6'
+env:
+  node: true
+  mocha: true
+rules:
+  no-use-before-define: 'off'              # recursive functions make this impossible
+  strict: 'off'
+  comma-dangle: 'off'
+  no-template-curly-in-string: 'off'
+  import/no-extraneous-dependencies: 'off'  # Gruntfile devDependencies
+  no-param-reassign: 'off'
+  prefer-spread: 'off'
+  prefer-rest-params: 'off'
+  max-len: ['error', 140, 2, {              # Set max line length to 140 chars
+      ignoreUrls: true,
+      ignoreComments: false,
+      ignoreRegExpLiterals: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+    }]

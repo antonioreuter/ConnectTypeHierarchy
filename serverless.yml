@@ -1,0 +1,159 @@
+service: ConnectTypeHierarchy # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  memorySize: 256
+  timeout: 30
+  versionFunctions: true
+  tracing: true
+  stage: poc
+  region: eu-west-1
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource:
+        - Fn::Join:
+          - ":"
+          - - "arn"
+            - Ref: "AWS::Partition"
+            - "logs"
+            - Ref: "AWS::Region"
+            - Ref: "AWS::AccountId"
+            - "log-group"
+            - "/aws/lambda/"
+            - "*"
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+
+  environment:
+    Env: 'DEV'
+
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
+
+# you can add statements to the Lambda function's IAM Role here
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:ListBucket"
+#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+#            - "/*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+functions:
+  type-hierarchy-list:
+    handler: 'src/controllers/typeHierarchy/typeHierarchyGET.request'
+    name: ''
+    reservedConcurrency: 1
+    environment:
+      TYPE_HIERARCHY_TABLE: TypeHierarchy-${self:provider.stage}
+    events:
+      - http:
+          path: /typeHierarchy/{id}
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
+          cacheKey:
+            - method.request.path.id
+      - http:
+          path: /typeHierarchy
+          method: get
+
+resources:
+  Resources:
+    ApiGatewayStageDev:
+      Type: AWS::ApiGateway::Stage
+      Properties:
+        StageName: dev
+        CacheClusterEnabled: true
+        CacheClusterSize: '0.5'
+        MethodSettings:
+          - HttpMethod: GET
+            ResourcePath: '/'
+            CachingEnabled: true
+            CacheTtlInSeconds: 500
+
+
+    ApiGatewayMethodTypeHierarchyGet:
+      Type: AWS::ApiGateway::Method
+      Properties:
+        HttpMethod: 'GET'
+        RequestParameters:
+          - method.request.path.id: true
+        Integration:
+          RequestParameters:
+            - integration.request.path.id: 'method.request.path.id'
+          CacheNamespace: 'ApiGatewayTypeHierarchyCacheNamespace'
+          CacheKeyParameters:
+            - method.request.path.id
+
+    TypeHierarchy:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TypeHierarchy-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+          - AttributeName: "oauthClientId"
+            AttributeType: "S"
+          - AttributeName: "deviceType"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: "10"
+          WriteCapacityUnits: "10"
+        GlobalSecondaryIndexes:
+        - IndexName: "GSI-OAuthClientId"
+          KeySchema:
+            - AttributeName: "oauthClientId"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: "10"
+            WriteCapacityUnits: "10"
+        - IndexName: "GSI-DeviceType"
+          KeySchema:
+            - AttributeName: "deviceType"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"
+          ProvisionedThroughput:
+            ReadCapacityUnits: "10"
+            WriteCapacityUnits: "10"
