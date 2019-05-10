@@ -4,6 +4,16 @@ service: ConnectTypeHierarchy # NOTE: update this with your service name
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+plugins:
+  - serverless-api-gateway-caching
+
+custom:
+  apiGatewayCaching:
+    enabled: true
+    clusterSize: '0.5'
+    ttlInSeconds: 300
+    dataEncrypted: true
+
 provider:
   name: aws
   runtime: nodejs8.10
@@ -39,47 +49,19 @@ provider:
   environment:
     Env: 'DEV'
 
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
-
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
-
 functions:
-  type-hierarchy-list:
-    handler: 'src/controllers/typeHierarchy/typeHierarchyGET.request'
-    name: ''
-    reservedConcurrency: 1
+  type-hierarchy-get:
+    handler: 'src/controllers/typeHierarchy/typeHierarchyGet.request'
+    name: 'TypeHierarchyGet'
+    reservedConcurrency: 5
     environment:
       TYPE_HIERARCHY_TABLE: TypeHierarchy-${self:provider.stage}
     events:
+      - http:
+          path: /typeHierarchy
+          method: get
+          caching:
+            enabled: false
       - http:
           path: /typeHierarchy/{id}
           method: get
@@ -87,40 +69,13 @@ functions:
             parameters:
               paths:
                 id: true
-          cacheKey:
-            - method.request.path.id
-      - http:
-          path: /typeHierarchy
-          method: get
+          caching:
+            enabled: true
+            cacheKeyParameters:
+              - name: request.path.id
 
 resources:
   Resources:
-    ApiGatewayStageDev:
-      Type: AWS::ApiGateway::Stage
-      Properties:
-        StageName: dev
-        CacheClusterEnabled: true
-        CacheClusterSize: '0.5'
-        MethodSettings:
-          - HttpMethod: GET
-            ResourcePath: '/'
-            CachingEnabled: true
-            CacheTtlInSeconds: 500
-
-
-    ApiGatewayMethodTypeHierarchyGet:
-      Type: AWS::ApiGateway::Method
-      Properties:
-        HttpMethod: 'GET'
-        RequestParameters:
-          - method.request.path.id: true
-        Integration:
-          RequestParameters:
-            - integration.request.path.id: 'method.request.path.id'
-          CacheNamespace: 'ApiGatewayTypeHierarchyCacheNamespace'
-          CacheKeyParameters:
-            - method.request.path.id
-
     TypeHierarchy:
       Type: AWS::DynamoDB::Table
       Properties:
